@@ -1,2 +1,4 @@
-# แจ้งสถานะระบบ PvP (ยกเลิกข้อจำกัด Raid Day แล้ว)
-tellraw @s [{"text":"ℹ️ [NBs SMP] ","color":"yellow","bold":true},{"text":"ระบบยกเลิกข้อจำกัด Raid Day แล้ว! ผู้เล่นทุกคนสามารถ PvP และดรอปป้ายชื่อคะแนน (+15) ได้ทุกวันตลอดเวลา","color":"gray"}]
+# ปิดโหมด Raid Day (กลับสู่ช่วงปกติ)
+scoreboard players set #raid_day game_state 0
+tellraw @a [{"text":"🕊️ [NBs SMP] ","color":"green","bold":true},{"text":"จบช่วง Raid Day แล้ว กลับสู่โหมดเอาชีวิตรอดปกติ","color":"yellow"}]
+playsound minecraft:entity.player.levelup master @a ~ ~ ~ 1 1

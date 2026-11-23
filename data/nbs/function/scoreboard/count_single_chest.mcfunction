@@ -1,14 +1,12 @@
 # 1. เช็กว่าตำแหน่งของหมุดนี้ยังมีบล็อกกล่องหรือถังอยู่จริงไหม ถ้าไม่มีให้ล้างสถานะและลบหมุดทิ้ง
-execute if entity @s[tag=hidden_chest] unless block ~ ~ ~ minecraft:chest unless block ~ ~ ~ minecraft:trapped_chest unless block ~ ~ ~ minecraft:barrel unless block ~ ~ ~ #nbs:shulker_boxes run function nbs:scoreboard/clear_hidden_chest
-execute unless block ~ ~ ~ minecraft:chest unless block ~ ~ ~ minecraft:trapped_chest unless block ~ ~ ~ minecraft:barrel unless block ~ ~ ~ #nbs:shulker_boxes run kill @s
+execute if entity @s[tag=hidden_chest] unless block ~ ~ ~ minecraft:chest unless block ~ ~ ~ minecraft:trapped_chest unless block ~ ~ ~ minecraft:barrel run function nbs:scoreboard/clear_hidden_chest
+execute unless block ~ ~ ~ minecraft:chest unless block ~ ~ ~ minecraft:trapped_chest unless block ~ ~ ~ minecraft:barrel run kill @s
 
 # ==========================================
 # 2. ตรวจสอบว่ากล่องนี้อยู่ในรัศมี 32 บล็อกของธงอาณาเขตทีมใด (นับคะแนนเฉพาะกล่องในเขตธงเท่านั้น!)
 # ==========================================
 scoreboard players set #chest_owner team_id 0
 execute if entity @e[type=minecraft:marker,tag=flag_anchor,distance=..32] run scoreboard players operation #chest_owner team_id = @e[type=minecraft:marker,tag=flag_anchor,distance=..32,sort=nearest,limit=1] team_id
-# ซิงค์ team_id ของหมุดกล่องตามเขตธง: ในเขตธง (1..8) หรือนอกเขตธง (0 = ไม่นับคะแนน)
-scoreboard players operation @s team_id = #chest_owner team_id
 
 # ==========================================
 # 3. รีเซ็ตตัวนับไอเทมชิงชัยในกล่อง และสแกนของในกล่อง

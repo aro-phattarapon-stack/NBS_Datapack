@@ -29,6 +29,7 @@ export class RconClient {
     private readonly host: string,
     private readonly port: number,
     private readonly password: string,
+    private readonly timeoutMs = 3000,
   ) {}
 
   public isReady(): boolean {
@@ -126,7 +127,7 @@ export class RconClient {
       const timer = setTimeout(() => {
         this.pending.delete(id);
         reject(new Error(`RCON timeout for request ${id}`));
-      }, 3000);
+      }, this.timeoutMs);
 
       this.pending.set(id, { id, resolve, reject, timer });
       this.socket.write(buf);

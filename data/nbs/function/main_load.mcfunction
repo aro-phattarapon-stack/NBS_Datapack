@@ -2,23 +2,17 @@ say Welcome
 
 # 1. สร้าง Scoreboard พื้นฐานทั้งหมดก่อนเรียกฟังก์ชันตั้งค่าระบบอื่นๆ (ป้องกันค่า NULL ตอนสร้างโลกใหม่)
 scoreboard objectives add game_state dummy
-scoreboard objectives add team_roster trigger
 scoreboard objectives add join_team trigger
 scoreboard objectives add citadel trigger
 scoreboard objectives add career trigger
 scoreboard objectives add guide trigger
 scoreboard objectives add career_id dummy
-scoreboard objectives add blacksmith_cd dummy
 scoreboard objectives add combat_tag dummy
 scoreboard objectives add pvp_cd dummy
 scoreboard objectives add team_id dummy
 scoreboard objectives add flag_count dummy
 scoreboard objectives add check_flag trigger
 scoreboard objectives add check_hidden trigger
-scoreboard objectives add flag_hud trigger
-scoreboard objectives add flag_dist dummy
-scoreboard objectives add territory_alert dummy
-scoreboard objectives add territory_enter dummy
 scoreboard objectives add flag_x dummy
 scoreboard objectives add flag_y dummy
 scoreboard objectives add flag_z dummy
@@ -44,21 +38,21 @@ scoreboard objectives add place_flag_8 minecraft.used:minecraft.white_banner
 
 scoreboard players add #game_state game_state 0
 scoreboard players add #raid_day game_state 0
-
-# อัปเดตสมุดในมือผู้เล่นทุกคนเมื่อ /reload ให้เป็นเล่มล่าสุดโดยอัตโนมัติ
-execute if score #game_state game_state matches 0 run clear @a minecraft:written_book[custom_data={team_book:1b}]
+scoreboard players add #world_id game_state 0
+execute unless score #world_id game_state matches 1.. store result score #world_id game_state run random value 100000..999999
 
 # 2. ติดตั้งตารางคะแนน, ระบบทีม (Default 4 ทีม), ขอบเขตโลก
 function nbs:scoreboard/score_setup
 function nbs:team/team_setup
 function nbs:border/border_setup
 
-# 3. บังคับโหลด Chunk จุดศูนย์กลาง (0, 0) ตลอดเวลา (ป้องกันหมุด spawn_anchor หายเมื่อผู้เล่นทุกคนวาร์ปออกนอกเมือง)
-forceload add -16 -16 16 16
+# 3. บังคับโหลด Chunk จุดศูนย์กลาง (0, 0) ตลอดเวลา — การสร้างป้อม Fallback จะรอจน Chunk โหลดจริงใน game_system
+forceload add -24 -24 24 24
 
-# สร้างตัวปักหมุดจุด Spawn และลานป้อมปราการ The Citadel (ถ้ายังไม่มีในโลก)
-# หมายเหตุ: หากต้องการสร้างลาน The Citadel ใหม่ที่ (0,0) ให้พิมพ์ /function nbs:spawn/build_citadel
-execute unless entity @e[type=minecraft:text_display,tag=citadel_title] run function nbs:spawn/build_citadel
+scoreboard players set #has_worldgen_pack game_state 0
+function #nbs_worldgen:installed
+execute if score #has_worldgen_pack game_state matches 0 unless entity @e[tag=citadel_built_anchor] if loaded -22 64 -22 if loaded 22 64 22 if loaded 0 64 0 run function nbs:spawn/build_citadel
+execute if entity @e[tag=spawn_anchor] unless entity @e[type=minecraft:interaction,tag=citadel_npc_hit] if loaded 0 64 0 run function nbs:spawn/summon_citadel_npcs
 execute at @e[tag=spawn_anchor,limit=1] run setworldspawn ~ ~ ~
 
 # 4. ติดตั้ง Bossbar สำหรับระบบ Random Boost Quest (เควสด่วน)

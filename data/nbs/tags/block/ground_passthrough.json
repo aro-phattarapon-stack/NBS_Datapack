@@ -1,0 +1,24 @@
+{
+  "values": [
+    "#minecraft:air",
+    "#minecraft:leaves",
+    "#minecraft:logs",
+    "#minecraft:replaceable",
+    "minecraft:bamboo",
+    "minecraft:vine",
+    "minecraft:water",
+    "minecraft:lily_pad",
+    "minecraft:snow",
+    "minecraft:red_mushroom_block",
+    "minecraft:brown_mushroom_block",
+    "minecraft:mushroom_stem",
+    "minecraft:bee_nest",
+    "minecraft:cocoa",
+    "minecraft:moss_carpet",
+    "minecraft:pink_petals",
+    "minecraft:wildflowers",
+    "minecraft:leaf_litter",
+    "minecraft:azalea",
+    "minecraft:flowering_azalea"
+  ]
+}

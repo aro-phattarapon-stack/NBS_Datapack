@@ -13,6 +13,5 @@ execute if score #t6_active game_state matches 1 run function nbs:team/print_joi
 execute if score #t7_active game_state matches 1 run function nbs:team/print_join_row with storage nbs:team t7
 execute if score #t8_active game_state matches 1 run function nbs:team/print_join_row with storage nbs:team t8
 
-tellraw @s [{"text":"  [ 📋 ดูรายชื่อสมาชิกแต่ละทีมและสายอาชีพ ]","color":"light_purple","bold":true,"click_event":{"action":"run_command","command":"/trigger team_roster"}}]
 tellraw @s [{"text":"  [ ✖ ออกจากทีมปัจจุบัน ]","color":"gray","bold":true,"click_event":{"action":"run_command","command":"/trigger join_team set 99"}}]
 tellraw @s {"text":"========================================","color":"dark_gray","bold":true}

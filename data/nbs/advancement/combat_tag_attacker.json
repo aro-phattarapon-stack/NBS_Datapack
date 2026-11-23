@@ -1,0 +1,15 @@
+{
+  "criteria": {
+    "hurt_player_entity": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "entity": {
+          "minecraft:entity_type": "minecraft:player"
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "nbs:career/on_pvp_hit"
+  }
+}

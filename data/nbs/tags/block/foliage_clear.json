@@ -1,0 +1,13 @@
+{
+  "values": [
+    "#minecraft:leaves",
+    "#minecraft:logs",
+    "minecraft:vine",
+    "minecraft:cocoa",
+    "minecraft:bamboo",
+    "minecraft:red_mushroom_block",
+    "minecraft:brown_mushroom_block",
+    "minecraft:mushroom_stem",
+    "minecraft:bee_nest"
+  ]
+}

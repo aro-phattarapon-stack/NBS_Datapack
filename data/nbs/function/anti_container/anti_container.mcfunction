@@ -5,7 +5,6 @@
 
 # 1. ตรวจจับการเปิด Shulker Box เพื่อปักหมุดตรวจสอบบล็อกกล่อง Shulker Box ในโลก
 execute as @a[scores={open_shulker=1..}] at @s anchored eyes positioned ^ ^ ^0.5 run function nbs:anti_container/raycast_shulker
-execute as @a[scores={open_shulker=1..}] at @s run function nbs:scoreboard/register_chest
 scoreboard players set @a[scores={open_shulker=1..}] open_shulker 0
 
 # 2. ตรวจสอบบล็อก Shulker Box ทุกตัวในโลกที่มีการเปิดใช้งาน (ถ้ามีของนับคะแนนจะดีดออกทันที)

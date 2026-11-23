@@ -1,1 +1,71 @@
 @import "tailwindcss";
+
+@theme {
+  --color-canvas: #14171c;
+  --color-surface: #1b1f26;
+  --color-elevated: #232832;
+  --color-hairline: #2c323e;
+  --color-border-strong: #3d4657;
+  --color-ink: #f3f5f8;
+  --color-ink-secondary: #a6b0c0;
+  --color-ink-muted: #8b95a6;
+  --color-emerald: #34d399;
+  --color-emerald-hover: #2ec08b;
+  --color-emerald-ink: #0b1310;
+  --color-amber: #fbbf24;
+  --color-danger: #f87171;
+
+  --color-background: #14171c;
+  --color-foreground: #f3f5f8;
+  --color-card: #1b1f26;
+  --color-card-foreground: #f3f5f8;
+  --color-primary: #34d399;
+  --color-primary-foreground: #0b1310;
+  --color-secondary: #232832;
+  --color-secondary-foreground: #f3f5f8;
+  --color-accent: #232832;
+  --color-accent-foreground: #f3f5f8;
+  --color-muted: #232832;
+  --color-muted-foreground: #a6b0c0;
+  --color-border: #2c323e;
+  --color-input: #3d4657;
+  --color-ring: #34d399;
+  --color-destructive: #f87171;
+}
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: 'IBM Plex Sans', 'IBM Plex Sans Thai', system-ui, -apple-system, sans-serif;
+  }
+
+  ::selection {
+    background-color: rgba(52, 211, 153, 0.25);
+    color: var(--color-ink);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) var(--color-canvas);
+  }
+
+  *::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--color-canvas);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: 3px;
+  }
+}

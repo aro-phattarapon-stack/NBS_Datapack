@@ -6,7 +6,7 @@ scoreboard players enable @a citadel
 # 1. เปิดเมนู The Citadel (/trigger citadel set 1) — เปิดอ่านได้ทุกที่
 execute as @a[scores={citadel=1}] run function nbs:citadel/open_menu
 
-# 2. รายการที่ต้องยืนอยู่ในเขต The Citadel (tag=in_spawn) และต้องมีทีม (team_id 1-4)
+# 2. รายการที่ต้องยืนอยู่ในเขต The Citadel (tag=in_spawn) และต้องมีทีม (team_id 1-8)
 execute as @a[scores={citadel=2..},tag=!in_spawn] run tellraw @s [{"text":"❌ [The Citadel] ","color":"red","bold":true},{"text":"คุณต้องเดินทางมาอยู่ในเขต The Citadel (0, 0) ก่อนจึงจะส่งของหรือซื้อธงได้!","color":"yellow"}]
 execute as @a[tag=in_spawn,scores={citadel=2..,team_id=0}] run tellraw @s [{"text":"❌ [The Citadel] ","color":"red","bold":true},{"text":"คุณต้องเข้าร่วมทีมก่อนใช้งานเมนูนี้!","color":"yellow"}]
 

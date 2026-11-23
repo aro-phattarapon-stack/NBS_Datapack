@@ -28,10 +28,10 @@ execute as @e[type=minecraft:marker,tag=chest_anchor] at @s run function nbs:sco
 # 2.1.1 คะแนนของชิงชัยที่พกอยู่ในตัวผู้เล่นของแต่ละทีม (Dragon Egg, Nether Star, ป้ายชื่อคะแนน)
 execute as @a[scores={team_id=1..8},gamemode=!spectator] run function nbs:scoreboard/count_player_items
 
-# 2.2 คะแนนและตัวคูณของทีม 1 ถึง 8 (Nether Star Cap 5, บอสที่ล็อก Cap, เควส, เช็กลิสต์อาชีพ, Advancements)
-function nbs:citadel/tick_flash_quest
-function nbs:career/check_team_advs
-function nbs:career/check_career_checklists
+# 2.2 คะแนนและตัวคูณของทีม 1 ถึง 8 (เฉพาะเมื่อเริ่มเกมแล้ว #game_state == 1 เพื่อป้องกันการแจกแต้มซ้ำตอนอยู่ Lobby)
+execute if score #game_state game_state matches 1 run function nbs:citadel/tick_flash_quest
+execute if score #game_state game_state matches 1 run function nbs:career/check_team_advs
+execute if score #game_state game_state matches 1 run function nbs:career/check_career_checklists
 
 function nbs:scoreboard/calc_team_total {team:1}
 function nbs:scoreboard/calc_team_total {team:2}
@@ -42,25 +42,25 @@ function nbs:scoreboard/calc_team_total {team:6}
 function nbs:scoreboard/calc_team_total {team:7}
 function nbs:scoreboard/calc_team_total {team:8}
 
-# 2.3 โบนัส The Wealthiest (ทีมที่ฝากเพชรในธนาคาร The Citadel มากที่สุด +80 แต้ม)
+# 2.3 โบนัส The Wealthiest (เฉพาะทีมที่เปิดใช้งานอยู่และฝากเพชรในธนาคาร The Citadel มากที่สุด +80 แต้ม)
 scoreboard players set #max_dia item_count 1
-execute if score #team_1 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_1 team_diamonds
-execute if score #team_2 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_2 team_diamonds
-execute if score #team_3 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_3 team_diamonds
-execute if score #team_4 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_4 team_diamonds
-execute if score #team_5 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_5 team_diamonds
-execute if score #team_6 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_6 team_diamonds
-execute if score #team_7 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_7 team_diamonds
-execute if score #team_8 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_8 team_diamonds
+execute if score #t1_active game_state matches 1 if score #team_1 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_1 team_diamonds
+execute if score #t2_active game_state matches 1 if score #team_2 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_2 team_diamonds
+execute if score #t3_active game_state matches 1 if score #team_3 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_3 team_diamonds
+execute if score #t4_active game_state matches 1 if score #team_4 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_4 team_diamonds
+execute if score #t5_active game_state matches 1 if score #team_5 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_5 team_diamonds
+execute if score #t6_active game_state matches 1 if score #team_6 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_6 team_diamonds
+execute if score #t7_active game_state matches 1 if score #team_7 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_7 team_diamonds
+execute if score #t8_active game_state matches 1 if score #team_8 team_diamonds > #max_dia item_count run scoreboard players operation #max_dia item_count = #team_8 team_diamonds
 
-execute if score #team_1 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_1 team_score 80
-execute if score #team_2 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_2 team_score 80
-execute if score #team_3 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_3 team_score 80
-execute if score #team_4 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_4 team_score 80
-execute if score #team_5 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_5 team_score 80
-execute if score #team_6 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_6 team_score 80
-execute if score #team_7 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_7 team_score 80
-execute if score #team_8 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_8 team_score 80
+execute if score #t1_active game_state matches 1 if score #team_1 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_1 team_score 80
+execute if score #t2_active game_state matches 1 if score #team_2 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_2 team_score 80
+execute if score #t3_active game_state matches 1 if score #team_3 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_3 team_score 80
+execute if score #t4_active game_state matches 1 if score #team_4 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_4 team_score 80
+execute if score #t5_active game_state matches 1 if score #team_5 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_5 team_score 80
+execute if score #t6_active game_state matches 1 if score #team_6 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_6 team_score 80
+execute if score #t7_active game_state matches 1 if score #team_7 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_7 team_score 80
+execute if score #t8_active game_state matches 1 if score #team_8 team_diamonds = #max_dia item_count run scoreboard players add ทีมที่_8 team_score 80
 
 # 2.4 โบนัส Top Killer อันดับ 1 (+80) และ อันดับ 2 (+40)
 tag @a remove top1_killer

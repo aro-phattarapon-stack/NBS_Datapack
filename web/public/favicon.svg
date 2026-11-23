@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="#14171C" stroke="#2C323E" stroke-width="2.5"/>
+  <!-- Top face of Minecraft isometric cube -->
+  <path d="M32 14L49 23.5L32 33L15 23.5L32 14Z" fill="#34D399" fill-opacity="0.28" stroke="#34D399" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Left face -->
+  <path d="M15 23.5L32 33V50L15 40.5V23.5Z" fill="#34D399" fill-opacity="0.14" stroke="#34D399" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Right face -->
+  <path d="M49 23.5L32 33V50L49 40.5V23.5Z" fill="#10B981" fill-opacity="0.22" stroke="#34D399" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

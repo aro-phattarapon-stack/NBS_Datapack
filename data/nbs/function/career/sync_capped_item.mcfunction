@@ -1,11 +1,9 @@
-# ==========================================
-# ซิงค์การครอบครองไอเทมสะสมที่มีโควตา Cap ให้กับทีม 1 ถึง 8 ตามสายอาชีพ $(career)
-# ==========================================
-$function nbs:career/check_capped_team_item {team:1,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:2,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:3,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:4,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:5,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:6,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:7,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_capped_team_item {team:8,cat:"$(cat)",career:$(career),cap_id:"$(cap_id)",max_prev:$(max_prev),key:"$(key)",item:"$(item)",pts:$(pts)}
+# ตรวจไอเทมสะสมที่มีเพดานจำนวนชนิดต่อทีม (1-8)
+$execute unless data storage nbs:career done.$(key).t1 if score #t1_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=1}] container.* $(item) run function nbs:career/award_capped_checklist {team:1,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t2 if score #t2_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=2}] container.* $(item) run function nbs:career/award_capped_checklist {team:2,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t3 if score #t3_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=3}] container.* $(item) run function nbs:career/award_capped_checklist {team:3,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t4 if score #t4_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=4}] container.* $(item) run function nbs:career/award_capped_checklist {team:4,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t5 if score #t5_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=5}] container.* $(item) run function nbs:career/award_capped_checklist {team:5,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t6 if score #t6_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=6}] container.* $(item) run function nbs:career/award_capped_checklist {team:6,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t7 if score #t7_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=7}] container.* $(item) run function nbs:career/award_capped_checklist {team:7,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t8 if score #t8_$(cap_id) team_boss_cnt matches ..$(max_prev) if items entity @a[scores={team_id=8}] container.* $(item) run function nbs:career/award_capped_checklist {team:8,cat:"$(cat)",cap_id:"$(cap_id)",key:"$(key)",pts:$(pts),name:"$(name)"}

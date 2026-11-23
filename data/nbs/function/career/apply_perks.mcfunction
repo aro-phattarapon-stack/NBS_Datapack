@@ -5,8 +5,8 @@ scoreboard players set #career_tick rnd_temp 0
 execute as @a[scores={career_id=1}] if items entity @s weapon.mainhand #minecraft:hoes run effect give @s minecraft:haste 3 0 true
 execute as @a[scores={career_id=1}] if items entity @s weapon.mainhand #minecraft:hoes run effect give @s minecraft:saturation 2 0 true
 
-# 2. Blacksmith: Perk กันไฟฉุกเฉิน 10 วินาที (ทำงานครั้งเดียวแบบเรียลไทม์ใน career_system)
-# (นำการแจกซ้ำทุก 2 วินาทีออกแล้ว เพื่อไม่ให้กันไฟค้างเรื่อยๆ ในลาวา)
+# 2. Blacksmith: เลือด <= 10 (5 หัวใจ) ได้ Fire Resistance
+execute as @a[scores={career_id=2,player_hp=1..10}] run effect give @s minecraft:fire_resistance 4 0 true
 
 # 3. Monster Hunter: Night Vision (15 วิ ไม่กระพริบ) + Strength I (เฉพาะนอก Combat Tag PvP)
 execute as @a[scores={career_id=3}] run effect give @s minecraft:night_vision 15 0 true

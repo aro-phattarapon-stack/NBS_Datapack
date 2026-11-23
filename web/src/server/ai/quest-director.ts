@@ -19,23 +19,68 @@ function clampCount(count: number, entry: QuestWhitelistEntry): number {
   return Math.max(entry.minCount, Math.min(entry.maxCount, rounded));
 }
 
-function pickWeightedFallback(recentItems: string[]): GeneratedQuestResult {
+export type GameStage = 'early' | 'mid' | 'late';
+
+export function detectGameStage(state: ServerState): GameStage {
+  const activeScores = state.teams.filter((t) => t.active).map((t) => t.score);
+  const topScore = activeScores.length > 0 ? Math.max(...activeScores) : 0;
+  if (topScore >= 900) return 'late';
+  if (topScore >= 350 || state.raidDay) return 'mid';
+  return 'early';
+}
+
+const STAGE_WEIGHTS: Record<GameStage, Record<QuestWhitelistEntry['difficulty'], number>> = {
+  early: { early: 6, mid: 2, late: 0 },
+  mid: { early: 2, mid: 6, late: 2 },
+  late: { early: 1, mid: 3, late: 6 },
+};
+
+/**
+ * Selects a quest from the balanced whitelist weighted by match stage (early/mid/late).
+ */
+export function pickWeightedFallback(
+  recentItems: string[],
+  state?: ServerState,
+  rng: () => number = Math.random,
+): GeneratedQuestResult {
   const candidates = MC_QUEST_WHITELIST.filter((e) => !recentItems.includes(e.item));
   const pool = candidates.length > 0 ? candidates : MC_QUEST_WHITELIST;
-  const chosen = pool[Math.floor(Math.random() * pool.length)]!;
+  const stage: GameStage = state ? detectGameStage(state) : 'mid';
+  const weights = STAGE_WEIGHTS[stage];
+
+  const weighted = pool.map((entry) => ({
+    entry,
+    weight: Math.max(0, weights[entry.difficulty] ?? 1),
+  }));
+  const totalWeight = weighted.reduce((acc, w) => acc + w.weight, 0);
+
+  let chosen = pool[0]!;
+  if (totalWeight <= 0) {
+    chosen = pool[Math.floor(rng() * pool.length)]!;
+  } else {
+    let cursor = rng() * totalWeight;
+    for (const item of weighted) {
+      cursor -= item.weight;
+      if (cursor <= 0) {
+        chosen = item.entry;
+        break;
+      }
+    }
+  }
+
   return {
     item: chosen.item,
     count: chosen.defaultCount,
     displayName: `${chosen.thaiName} x${chosen.defaultCount}`,
     source: 'POOL',
-    reason: 'Fallback Weighted Pool (สุ่มจากคลังเควสที่ผ่านการบาลานซ์แล้ว)',
+    reason: `Weighted Pool (${stage} stage — ${chosen.difficulty} tier)`,
   };
 }
 
 /**
  * AI Game Director: Analyzes live team standings via Gemini API,
  * enforces strict JSON Schema + Minecraft 26.3 Item Whitelist guardrails,
- * and falls back safely to a balanced pool if API key is missing or invalid.
+ * and falls back safely to a stage-weighted pool if API key is missing or invalid.
  */
 export async function generateSmartFlashQuest(
   state: ServerState,
@@ -43,7 +88,7 @@ export async function generateSmartFlashQuest(
 ): Promise<GeneratedQuestResult> {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
   if (!apiKey) {
-    return pickWeightedFallback(recentItems);
+    return pickWeightedFallback(recentItems, state);
   }
 
   const activeTeams = state.teams.filter((t) => t.active);
@@ -61,7 +106,7 @@ export async function generateSmartFlashQuest(
       model,
       contents: [
         `You are the Game Director for a competitive Minecraft 26.3 SMP (25-minute Flash Quest).`,
-        `Current standings: ${scoreSummary || 'Early game'}. PvP Drop: Always ON.`,
+        `Current standings: ${scoreSummary || 'Early game'}. Raid Day: ${state.raidDay ? 'ON' : 'OFF'}.`,
         `Recently used items to avoid repeating: ${recentItems.join(', ') || 'none'}.`,
         `Pick ONE fair and exciting quest item strictly from this allowed whitelist: ${allowedIds}.`,
         `Return JSON with item (exact minecraft:... id from whitelist), count (within min-max), displayName (short Thai+item label, max 36 chars, no quotes), and reason (short Thai explanation of why this fits the current match).`,
@@ -81,8 +126,9 @@ export async function generateSmartFlashQuest(
       },
     });
 
-    const text = response.text;
-    if (!text) return pickWeightedFallback(recentItems);
+    const text = response.text?.trim();
+    if (!text) return pickWeightedFallback(recentItems, state);
+
     const parsed = JSON.parse(text) as {
       item?: string;
       count?: number;
@@ -90,27 +136,23 @@ export async function generateSmartFlashQuest(
       reason?: string;
     };
 
-    const whitelistEntry = MC_QUEST_WHITELIST.find((w) => w.item === parsed.item);
-    if (!whitelistEntry) {
-      console.warn('[AI Guardrail] Rejected non-whitelisted item:', parsed.item);
-      return pickWeightedFallback(recentItems);
+    const matched = MC_QUEST_WHITELIST.find((w) => w.item === parsed.item);
+    if (!matched) {
+      return pickWeightedFallback(recentItems, state);
     }
 
-    const safeCount = clampCount(parsed.count ?? whitelistEntry.defaultCount, whitelistEntry);
-    const safeName = sanitizeDisplayName(
-      parsed.displayName ?? `${whitelistEntry.thaiName} x${safeCount}`,
-      `${whitelistEntry.thaiName} x${safeCount}`,
-    );
+    const safeCount = clampCount(parsed.count ?? matched.defaultCount, matched);
+    const fallbackName = `${matched.thaiName} x${safeCount}`;
 
     return {
-      item: whitelistEntry.item,
+      item: matched.item,
       count: safeCount,
-      displayName: safeName,
+      displayName: sanitizeDisplayName(parsed.displayName ?? fallbackName, fallbackName),
       source: 'AI',
-      reason: sanitizeDisplayName(parsed.reason ?? 'AI เลือกตามสถานการณ์เกมปัจจุบัน', 'AI Game Director'),
+      reason: parsed.reason?.trim() || 'AI เลือกให้สมดุลกับคะแนนทีมล่าสุด',
     };
   } catch (err) {
-    console.warn('[AI Director] Falling back to pool:', (err as Error).message);
-    return pickWeightedFallback(recentItems);
+    console.warn('[AI] Gemini unavailable, using weighted pool fallback:', (err as Error).message);
+    return pickWeightedFallback(recentItems, state);
   }
 }

@@ -1,11 +1,9 @@
-# ==========================================
-# ซิงค์การครอบครองไอเทม $(item) ให้กับทีม 1 ถึง 8 ตามสายอาชีพ $(career)
-# ==========================================
-$function nbs:career/check_team_item {team:1,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:2,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:3,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:4,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:5,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:6,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:7,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
-$function nbs:career/check_team_item {team:8,cat:"$(cat)",career:$(career),key:"$(key)",item:"$(item)",pts:$(pts)}
+# ตรวจว่าสมาชิกในทีม (1-8) มีไอเทม $(item) หรือไม่ (นับ 1 ครั้งต่อทีมในหมวด $(cat))
+$execute unless data storage nbs:career done.$(key).t1 if items entity @a[scores={team_id=1}] container.* $(item) run function nbs:career/award_checklist {team:1,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t2 if items entity @a[scores={team_id=2}] container.* $(item) run function nbs:career/award_checklist {team:2,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t3 if items entity @a[scores={team_id=3}] container.* $(item) run function nbs:career/award_checklist {team:3,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t4 if items entity @a[scores={team_id=4}] container.* $(item) run function nbs:career/award_checklist {team:4,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t5 if items entity @a[scores={team_id=5}] container.* $(item) run function nbs:career/award_checklist {team:5,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t6 if items entity @a[scores={team_id=6}] container.* $(item) run function nbs:career/award_checklist {team:6,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t7 if items entity @a[scores={team_id=7}] container.* $(item) run function nbs:career/award_checklist {team:7,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}
+$execute unless data storage nbs:career done.$(key).t8 if items entity @a[scores={team_id=8}] container.* $(item) run function nbs:career/award_checklist {team:8,cat:"$(cat)",key:"$(key)",pts:$(pts),name:"$(name)"}

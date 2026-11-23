@@ -1,0 +1,2 @@
+*.sh text eol=lf
+*.mcfunction text eol=lf

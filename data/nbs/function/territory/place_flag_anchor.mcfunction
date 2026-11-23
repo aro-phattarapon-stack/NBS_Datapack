@@ -87,12 +87,8 @@ execute as @e[type=minecraft:marker,tag=temp_flag_check,limit=1] run tag @s add 
 execute as @e[type=minecraft:marker,tag=temp_flag_check,limit=1] run tag @s add new_flag
 tag @e[type=minecraft:marker,tag=temp_flag_check] remove temp_flag_check
 
-# บันทึกข้อมูลเลขทีมและพิกัดลงในหมุดธง
+# บันทึกข้อมูลเลขทีมของคนวางลงในหมุด
 scoreboard players operation @e[type=minecraft:marker,tag=new_flag,limit=1] team_id = @s team_id
-execute as @e[type=minecraft:marker,tag=new_flag,limit=1] store result score @s flag_x run data get entity @s Pos[0]
-execute as @e[type=minecraft:marker,tag=new_flag,limit=1] store result score @s flag_y run data get entity @s Pos[1]
-execute as @e[type=minecraft:marker,tag=new_flag,limit=1] store result score @s flag_z run data get entity @s Pos[2]
-execute as @e[type=minecraft:marker,tag=new_flag,limit=1] run tag @s add has_pos
 
 # สร้างป้ายชื่อลอยเหนือธงตามชื่อและสีทีมที่แอดมินตั้งไว้ (รองรับ 1-8 ทีม)
 execute if score @s team_id matches 1 run function nbs:territory/summon_flag_text with storage nbs:team t1
